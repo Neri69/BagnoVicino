@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bagno Vicino">
+<meta name="theme-color" content="#14342B">
+<title>Bagno Vicino 🧭</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #EFF6F3;
+    --bg-card: #FFFFFF;
+    --ink: #14342B;
+    --ink-soft: #4C6B60;
+    --ristoranti: #2A9D8F;
+    --bar: #C98A2E;
+    --bagni: #4A6FA5;
+    --benzinai: #7D5BA6;
+    --autogrill: #3C7A62;
+    --farmacia: #C65D7B;
+    --super: #6E9B52;
+    --urgent: #E76F51;
+    --line: rgba(20,52,43,0.08);
+    --shadow-sm: 0 1px 2px rgba(20,52,43,0.04);
+    --shadow-card: 0 4px 16px -6px rgba(20,52,43,0.10);
+    --shadow-card-hover: 0 10px 26px -8px rgba(20,52,43,0.16);
+  }
+  @keyframes fadeInUp{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    * { animation: none !important; }
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color: transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(60% 40% at 85% -5%, rgba(42,157,143,0.10), transparent),
+      radial-gradient(50% 30% at 0% 0%, rgba(74,111,165,0.08), transparent),
+      var(--bg);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    min-height:100dvh;
+    display:flex;
+    justify-content:center;
+    padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+  }
+  .app{
+    width:100%;
+    max-width:480px;
+    padding:28px 20px 40px;
+    display:flex;
+    flex-direction:column;
+    min-height:100dvh;
+  }
+  header{margin-bottom: 22px; animation: fadeInUp .6s ease both;}
+  .eyebrow{
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--ristoranti);
+    font-weight:700;
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .eyebrow::before{
+    content:'';
+    width:16px;
+    height:1.5px;
+    background:var(--ristoranti);
+    opacity:.55;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:34px;
+    line-height:1.1;
+    margin:0 0 12px;
+    letter-spacing:-0.015em;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--urgent);
+  }
+  .sub{
+    color:var(--ink-soft);
+    font-size:15.5px;
+    line-height:1.55;
+    margin:0;
+    max-width:36ch;
+  }
+
+  /* Signature element: radar ping behind the urgent button */
+  .radar-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin: 30px 0 24px;
+    height:150px;
+    animation: fadeInUp .6s ease .1s both;
+  }
+  .radar-ring{
+    position:absolute;
+    border-radius:50%;
+    border:1.5px solid rgba(231,111,81,0.35);
+    width:150px;height:150px;
+    animation: ping 2.6s cubic-bezier(.2,.6,.3,1) infinite;
+    opacity:0;
+  }
+  .radar-ring.d2{animation-delay:0.9s;}
+  .radar-ring.d3{animation-delay:1.8s;}
+  @keyframes ping{
+    0%{ transform:scale(0.5); opacity:.55; }
+    100%{ transform:scale(1.6); opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .radar-ring{ animation: none; opacity:.25; }
+  }
+  .urgent-btn{
+    position:relative;
+    z-index:2;
+    width:128px;height:128px;
+    border-radius:50%;
+    border:none;
+    background: linear-gradient(160deg, #F3946E, var(--urgent) 60%, #D65C3D);
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:5px;
+    font-family:'Manrope';
+    font-weight:800;
+    font-size:12.5px;
+    letter-spacing:.04em;
+    line-height:1.25;
+    box-shadow: 0 16px 32px -10px rgba(231,111,81,0.55), inset 0 1px 0 rgba(255,255,255,0.25);
+    cursor:pointer;
+    transition: transform .15s ease, box-shadow .15s ease;
+    padding: 10px;
+  }
+  .urgent-btn:active{ transform: scale(0.94); box-shadow: 0 8px 20px -8px rgba(231,111,81,0.5); }
+  .urgent-btn svg{ width:27px; height:27px; margin-bottom:1px; }
+
+  .status{
+    text-align:center;
+    min-height:20px;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom: 22px;
+    transition: opacity .2s ease;
+  }
+  .status.error{ color:var(--urgent); font-weight:600; }
+
+  .section-label{
+    font-size:12.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    font-weight:700;
+    margin: 4px 0 12px;
+  }
+
+  .cards{ display:flex; flex-direction:column; gap:12px; }
+  .divider{
+    height:1px;
+    background: var(--line);
+    margin: 26px 0 20px;
+  }
+  .disclaimer{
+    font-size:12px;
+    color:var(--ink-soft);
+    opacity:.8;
+    line-height:1.5;
+    margin: 12px 2px 0;
+  }
+  .card{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:var(--bg-card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:16px 16px;
+    text-align:left;
+    cursor:pointer;
+    transition: transform .12s ease, box-shadow .12s ease;
+    box-shadow: 0 1px 0 rgba(20,52,43,0.03);
+  }
+  .card:active{ transform: scale(0.98); }
+  .card .icon{
+    flex-shrink:0;
+    width:46px;height:46px;
+    border-radius:13px;
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;
+  }
+  .card.ristoranti .icon{ background:var(--ristoranti); }
+  .card.bar .icon{ background:var(--bar); }
+  .card.bagni .icon{ background:var(--bagni); }
+  .card.benzinai .icon{ background:var(--benzinai); }
+  .card.autogrill .icon{ background:var(--autogrill); }
+  .card.farmacia .icon{ background:var(--farmacia); }
+  .card.super .icon{ background:var(--super); }
+  .card .icon svg{ width:22px; height:22px; }
+  .card .text{ flex:1; }
+  .card .text .title{ font-weight:800; font-size:15.5px; margin-bottom:2px; }
+  .card .text .desc{ font-size:13px; color:var(--ink-soft); line-height:1.35; }
+  .card .arrow{ color: var(--ink-soft); opacity:.5; font-size:18px; }
+
+  footer{
+    margin-top:auto;
+    padding-top:28px;
+    text-align:center;
+  }
+  footer p{
+    font-size:12px;
+    color:var(--ink-soft);
+    opacity:.75;
+    line-height:1.5;
+    margin:0;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header>
+    <div class="eyebrow">In viaggio</div>
+    <h1>Reggi ancora<br><em>un attimo.</em></h1>
+    <p class="sub">Un tocco e ti porto al bagno più vicino, ovunque siamo.</p>
+  </header>
+
+  <div class="radar-wrap">
+    <div class="radar-ring"></div>
+    <div class="radar-ring d2"></div>
+    <div class="radar-ring d3"></div>
+    <button class="urgent-btn" id="urgentBtn" aria-label="Trova il bagno più vicino, subito">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21c-4-4.5-7-8-7-11.5A7 7 0 0 1 12 2a7 7 0 0 1 7 7.5C19 13 16 16.5 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      SUBITO
+    </button>
+  </div>
+
+  <p class="status" id="status">Tocca un pulsante per cercare vicino a te.</p>
+
+  <div class="section-label">Cerca per tipo</div>
+  <div class="cards">
+    <div class="card ristoranti" data-query="ristoranti" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h1a2 2 0 0 0 2-2V2"/><path d="M6 2v20"/><path d="M18 2c-1.5 0-3 1.5-3 5v6c0 1.1.9 2 2 2h1v7"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Ristoranti</div>
+        <div class="desc">Locali con sala e bagno, ideali se serve anche fermarsi a sedersi</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="card bar" data-query="bar" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Bar</div>
+        <div class="desc">Soluzione più rapida, spesso il bagno è vicino all'ingresso</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="card bagni" data-query="bagni pubblici" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Bagni pubblici</div>
+        <div class="desc">Nessun obbligo di consumazione, comodi in autostrada o città</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="card benzinai" data-query="benzinai" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="22" x2="15" y2="22"/><line x1="4" y1="9" x2="14" y2="9"/><path d="M4 22V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v18"/><path d="M14 9h2a2 2 0 0 1 2 2v5a1.5 1.5 0 0 0 3 0V8l-3-3"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Benzinai</div>
+        <div class="desc">Spesso hanno un bagno, comodi se stai già facendo rifornimento</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="card autogrill" data-query="area di servizio autostrada" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16"/><path d="M4 15h16"/><path d="M6 15l2-8h8l2 8"/><path d="M10 7V4h4v3"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Aree di servizio</div>
+        <div class="desc">La scelta migliore in autostrada: bagno, snack e sgranchirsi le gambe</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label">Altri servizi utili</div>
+  <div class="cards">
+    <div class="card farmacia" data-query="farmacia" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v8"/><path d="M8 12h8"/><circle cx="12" cy="12" r="10"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Farmacie</div>
+        <div class="desc">Aperte anche fuori orario, comode per qualsiasi necessità</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+
+    <div class="card super" data-query="supermercato" role="button" tabindex="0">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+      </div>
+      <div class="text">
+        <div class="title">Supermercati</div>
+        <div class="desc">Per qualsiasi cosa serva lungo il tragitto</div>
+      </div>
+      <div class="arrow">›</div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Apre Google Maps centrato sulla tua posizione attuale.<br>Serve il permesso di localizzazione la prima volta.</p>
+  </footer>
+
+</div>
+
+<script>
+  const statusEl = document.getElementById('status');
+
+  function setStatus(msg, isError){
+    statusEl.textContent = msg;
+    statusEl.classList.toggle('error', !!isError);
+  }
+
+  function openMapsSearch(query){
+    setStatus('Trovo la tua posizione…');
+
+    const fallbackUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
+
+    if(!navigator.geolocation){
+      setStatus('Il telefono non supporta la geolocalizzazione. Provo comunque a cercare.', true);
+      window.location.href = fallbackUrl;
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords;
+        const url = 'https://www.google.com/maps/search/?api=1&query=' +
+                    encodeURIComponent(query + ' vicino a ' + latitude + ',' + longitude);
+        setStatus('Apro Google Maps…');
+        window.location.href = url;
+      },
+      (err) => {
+        let msg = 'Non riesco ad accedere alla posizione.';
+        if(err.code === err.PERMISSION_DENIED){
+          msg = 'Posizione bloccata. Attivala nelle impostazioni del telefono per il browser.';
+        }
+        setStatus(msg, true);
+        setTimeout(() => { window.location.href = fallbackUrl; }, 300);
+      },
+      { enableHighAccuracy: true, timeout: 8000, maximumAge: 60000 }
+    );
+  }
+
+  document.getElementById('urgentBtn').addEventListener('click', () => {
+    openMapsSearch('bagno pubblico');
+  });
+
+  document.querySelectorAll('.card').forEach(card => {
+    const go = () => openMapsSearch(card.dataset.query);
+    card.addEventListener('click', go);
+    card.addEventListener('keypress', (e) => { if(e.key === 'Enter') go(); });
+  });
+</script>
+</body>
+</html>
